@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-[#1a1a1a] text-white overflow-hidden m-0 antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
