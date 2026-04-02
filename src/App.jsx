@@ -61,7 +61,7 @@ function App() {
     const newBubble = {
       id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
       text: text.trim(),
-      x: randomX,
+      x: randomX / window.innerWidth, // xRatio
       y: startY,
       size: sizeBase,
       duration: Math.random() * 5 + 10, // 10-15 seconds flight time
@@ -96,7 +96,7 @@ function App() {
     const newBubble = {
       id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
       text: '',
-      x: Math.max(0, Math.min(x - size / 2, window.innerWidth - size)),
+      x: Math.max(0, Math.min(x - size / 2, window.innerWidth - size)) / window.innerWidth, // xRatio
       y: startY,
       size,
       duration: Math.random() * 4 + 7, // 7-11 seconds
@@ -118,12 +118,10 @@ function App() {
     const count = Math.floor(Math.random() * 4) + 3; // 한 틱당 3~6개 생성
     const newBubbles = Array.from({ length: count }).map(() => {
       const size = Math.random() * 50 + 20; // 20-70px 크기 (막대 전용은 좀 더 작게)
-      const randomX = Math.max(0, Math.min(startX - 60 + Math.random() * 120, window.innerWidth - size));
-      
       return {
         id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
         text: '',
-        x: randomX,
+        x: Math.max(0, Math.min(startX - 60 + Math.random() * 120, window.innerWidth - size)) / window.innerWidth, // xRatio
         y: startY,
         size,
         duration: Math.random() * 4 + 5, // 5-9초

@@ -1,13 +1,13 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const Bubble = ({ id, text, x, y, size, duration, sender, onPop }) => {
+const Bubble = ({ id, text, x: xRatio, y, size, duration, sender, onPop }) => {
   const startY = y ?? window.innerHeight;
   
   return (
     <motion.div
-      initial={{ y: startY, x, scale: 0 }}
-      animate={{ y: -size, x: [x, x + 30, x - 30, x], scale: 1 }}
+      initial={{ y: startY, scale: 0 }}
+      animate={{ y: -size, x: [0, 20, -20, 0], scale: 1 }}
       exit={{ scale: 1.5, opacity: 0, filter: 'blur(10px)' }}
       transition={{
         y: { duration: duration, ease: "linear" },
@@ -27,7 +27,7 @@ const Bubble = ({ id, text, x, y, size, duration, sender, onPop }) => {
       style={{
         width: size,
         height: size,
-        left: 0,
+        left: `${xRatio * 100}%`,
         background: 'radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.1) 30%, rgba(255, 255, 255, 0.05) 60%, rgba(255, 255, 255, 0.3) 100%)',
         boxShadow: 'inset 0 0 15px rgba(255,255,255,0.3), inset 10px 0 30px rgba(238,130,238,0.3), inset -10px 0 30px rgba(0,255,255,0.3), 0 0 10px rgba(255,255,255,0.2)'
       }}
