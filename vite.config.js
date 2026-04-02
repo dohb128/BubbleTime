@@ -10,10 +10,16 @@ export default defineConfig({
     host: '127.0.0.1', // localhost IP
     port: 443,
     https: true,
+    hmr: {
+      host: 'www.bubbletime', // HMR도 같은 호스트 사용
+      protocol: 'wss'
+    },
     proxy: {
       '/socket.io': {
         target: 'http://127.0.0.1:3001',
-        ws: true
+        ws: true,
+        changeOrigin: true,
+        secure: false
       }
     }
   }

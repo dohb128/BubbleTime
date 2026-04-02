@@ -55,6 +55,9 @@ function App() {
       ? wandRef.current.getBoundingClientRect().top + (wandRef.current.offsetHeight * 0.2)
       : window.innerHeight - 200;
 
+    // 글자 길이에 따른 비눗방울 크기 계산 (120px ~ 250px)
+    const sizeBase = Math.min(250, Math.max(120, text.length * 8 + 80));
+
     const newBubble = {
       id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
       text: text.trim(),
