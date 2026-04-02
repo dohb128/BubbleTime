@@ -1,10 +1,12 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const Bubble = ({ id, text, x, size, duration, sender, onPop }) => {
+const Bubble = ({ id, text, x, y, size, duration, sender, onPop }) => {
+  const startY = y ?? window.innerHeight;
+  
   return (
     <motion.div
-      initial={{ y: window.innerHeight, x, scale: 0 }}
+      initial={{ y: startY, x, scale: 0 }}
       animate={{ y: -size, x: [x, x + 30, x - 30, x], scale: 1 }}
       exit={{ scale: 1.5, opacity: 0, filter: 'blur(10px)' }}
       transition={{

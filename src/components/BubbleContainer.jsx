@@ -12,6 +12,7 @@ const BubbleContainer = ({ bubbles, onPop }) => {
             id={bubble.id}
             text={bubble.text}
             x={bubble.x}
+            y={bubble.y}
             size={bubble.size}
             duration={bubble.duration}
             sender={bubble.sender}

@@ -11,6 +11,8 @@ function App() {
   const [bubbles, setBubbles] = useState([]);
   const [myNickname, setMyNickname] = useState('');
   const [userCount, setUserCount] = useState(0);
+  const wandRef = useRef(null);
+
 
 
   // Auto clean up off-screen bubbles and WebSocket listener
@@ -48,13 +50,16 @@ function App() {
     const maxX = window.innerWidth * 0.9;
     const randomX = Math.random() * (maxX - minX) + minX;
     
-    // Size based on text length (between 120 and 250px)
-    const sizeBase = Math.min(250, Math.max(120, text.length * 8 + 80));
-    
+    // 중앙 하단 막대기의 동그란 부분 높이(대략 상단 20~25%)에서 생성
+    const startY = wandRef.current 
+      ? wandRef.current.getBoundingClientRect().top + (wandRef.current.offsetHeight * 0.2)
+      : window.innerHeight - 200;
+
     const newBubble = {
       id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
       text: text.trim(),
       x: randomX,
+      y: startY,
       size: sizeBase,
       duration: Math.random() * 5 + 10, // 10-15 seconds flight time
       createdAt: Date.now()
@@ -81,10 +86,15 @@ function App() {
     
     const x = e.clientX;
     const size = Math.random() * 60 + 40; // 40-100px random empty bubble
+    const startY = wandRef.current 
+      ? wandRef.current.getBoundingClientRect().top + (wandRef.current.offsetHeight * 0.2)
+      : e.clientY;
+
     const newBubble = {
       id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
       text: '',
       x: Math.max(0, Math.min(x - size / 2, window.innerWidth - size)),
+      y: startY,
       size,
       duration: Math.random() * 4 + 7, // 7-11 seconds
       createdAt: Date.now()
@@ -97,18 +107,21 @@ function App() {
   const wandIntervalRef = useRef(null);
 
   const spawnWandBubbles = useCallback(() => {
-    // 막대기를 중앙 하단으로 옮겼으므로 중앙(X)에서 퍼지도록 설정
-    const startX = window.innerWidth / 2;
+    // 중앙 하단 막대기의 동그란 부분 높이(상단 약 20% 지점) 계산
+    const rect = wandRef.current?.getBoundingClientRect();
+    const startX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+    const startY = rect ? rect.top + rect.height * 0.2 : window.innerHeight - 200;
 
-    const count = Math.floor(Math.random() * 3) + 2; // 한 틱당 2~4개 생성
+    const count = Math.floor(Math.random() * 4) + 3; // 한 틱당 3~6개 생성
     const newBubbles = Array.from({ length: count }).map(() => {
-      const size = Math.random() * 50 + 30; // 30-80px 크기
-      const randomX = Math.max(0, Math.min(startX - 100 + Math.random() * 200, window.innerWidth - size));
+      const size = Math.random() * 50 + 20; // 20-70px 크기 (막대 전용은 좀 더 작게)
+      const randomX = Math.max(0, Math.min(startX - 60 + Math.random() * 120, window.innerWidth - size));
       
       return {
         id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
         text: '',
         x: randomX,
+        y: startY,
         size,
         duration: Math.random() * 4 + 5, // 5-9초
         createdAt: Date.now()
@@ -162,6 +175,7 @@ function App() {
       </div>
 
       <img
+        ref={wandRef}
         src="/wand.png"
         alt="Bubble Wand"
         className="fixed bottom-0 left-1/2 -translate-x-1/2 w-[350px] sm:w-[500px] lg:w-[640px] max-h-[90vh] object-contain cursor-pointer transition-transform duration-300 origin-bottom z-0 touch-none hover:scale-105 active:scale-95"

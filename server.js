@@ -20,16 +20,19 @@ const io = new Server(httpServer, {
   }
 });
 
-const animals = [
-  '두루미', '사자', '호랑이', '토끼', '고양이', '강아지', '펭귄', '판다', '여우', '곰',
-  '다람쥐', '기린', '코끼리', '원숭이', '사슴', '늑대', '독수리', '올빼미', '고래', '거북이'
+const f1Drivers = [
+  'Max Verstappen', 'Lewis Hamilton', 'Lando Norris', 'Charles Leclerc', 'Oscar Piastri', 
+  'Carlos Sainz', 'George Russell', 'Sergio Perez', 'Fernando Alonso', 'Nico Hulkenberg', 
+  'Lance Stroll', 'Yuki Tsunoda', 'Kevin Magnussen', 'Alexander Albon', 'Daniel Ricciardo', 
+  'Pierre Gasly', 'Esteban Ocon', 'Valtteri Bottas', 'Ayrton Senna', 'Michael Schumacher',
+  'Sebastian Vettel', 'Kimi Raikkonen'
 ];
 
 let userCount = 0;
 
 io.on('connection', (socket) => {
   userCount++;
-  const nickname = `익명의 ${animals[Math.floor(Math.random() * animals.length)]}`;
+  const nickname = f1Drivers[Math.floor(Math.random() * f1Drivers.length)];
   socket.nickname = nickname;
 
   console.log(`${nickname} connected! (ID: ${socket.id}) - Total: ${userCount}`);
